@@ -13,6 +13,24 @@ class File {
         this.path = path;
         this.lastModif = stats.mtimeMs;
     }
+
+    /*
+    Update the lastModif member variable and check if the file
+    has been modified since the last check.
+    */
+    isModified() {
+        const stats = fs.lstatSync(this.path);
+        if (stats) {
+            const newLastModif = stats.mtimeMs;
+
+            if (newLastModif > this.lastModif) {
+                this.lastModif = newLastModif;
+                return true;
+            }
+        }
+
+        return false;
+    }
 };
 
 /*
@@ -86,5 +104,18 @@ module.exports = {
 
             return findFiles;
         }
+    },
+
+    /*
+    Checking if a file on the list of files has been modified.
+    */
+    isModified: function(files) {
+        let hasModification = false;
+        for (let file of files) {
+            if (file.isModified()) {
+                hasModification = true; // Do not exit, because we want to update the status of every file. Otherwise node will be restarted multiple time. 
+            }
+        }
+        return hasModification;
     }
 };
