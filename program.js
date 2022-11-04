@@ -3,6 +3,8 @@ The program module handle the execution the execution of the program.
 Whenever a signal like SIGINT or SINGTERM is called, the program will close.
 */
 
+const options = require("./options");
+
 /*
 Store the state of the program and close the program when needed.
 */
@@ -24,7 +26,7 @@ class Program {
                 if (!this.isRunning) {
                     clearInterval(this.intervalID);
                 }
-            }, 250);
+            }, options.argv.delay);
 
             // Listening to the system asking to close the program.
             process.on("SIGINT", () => { this.close(); });
