@@ -1,4 +1,5 @@
 const args = require("args");
+const strParser = require("./strParser");
 
 // Parsing the command line options to args.
 args.options([
@@ -10,7 +11,7 @@ args.options([
             let parsedArgs = [];
             for (let arg of aArgs) {
                 if (typeof arg === "string") {
-                    const splitStr = arg.split(" ");
+                    const splitStr = strParser.parseArgv(arg);
                     parsedArgs = parsedArgs.concat(splitStr);
                 }
             }
