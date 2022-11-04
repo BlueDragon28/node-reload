@@ -1,3 +1,4 @@
+const options = require("./options");
 const watcher = require("./watcher");
 const program = require("./program");
 const node = require("./nodeHandler")();
