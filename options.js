@@ -5,7 +5,17 @@ args.options([
     {
         name: "arguments",
         description: "The arguments to pass to the subcommand",
-        defaultValue: [ "./index.js" ]
+        defaultValue: [ "./index.js" ],
+        init: aArgs => {
+            let parsedArgs = [];
+            for (let arg of aArgs) {
+                if (typeof arg === "string") {
+                    const splitStr = arg.split(" ");
+                    parsedArgs = parsedArgs.concat(splitStr);
+                }
+            }
+            return parsedArgs;
+        }
     },
     {
         name: "command",
