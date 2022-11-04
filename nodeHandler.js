@@ -2,12 +2,13 @@
 This module handle the node starting and destruction.
 */
 
+const options = require("./options");
 const c = require("node:child_process");
 
 class NodeHandler {
     constructor() {
-        this.processPath = "node";
-        this.fileToStart = "./index.js";
+        this.processPath = options.argv.command;
+        this.args = options.argv.arguments;
         this.process = null;
     }
 
@@ -20,7 +21,7 @@ class NodeHandler {
             this.stop();
         }
 
-        this.process = c.spawn(this.processPath, [ this.fileToStart ]);
+        this.process = c.spawn(this.processPath, this.args);
 
         const output = data => {
             console.log(`${data}`);
@@ -31,7 +32,7 @@ class NodeHandler {
 
         this.process.on("close", () => {
             console.log(`${this.processPath} has been closed!`);
-        })
+        });
     }
 
     /*
