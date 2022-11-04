@@ -21,7 +21,15 @@ class NodeHandler {
             this.stop();
         }
 
+        // If the process fail to start, it mean the command does not exists
+        // or the arguments are not valid.
         this.process = c.spawn(this.processPath, this.args);
+
+        // If the process fail to start, stop the program.
+        this.process.on("error", err => {
+            console.log(`Failed to start ${this.processPath}.`);
+            process.exit(-1);
+        });
 
         const output = data => {
             console.log(`${data}`);
