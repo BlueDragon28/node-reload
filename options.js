@@ -24,6 +24,22 @@ args.options([
         defaultValue: "node"
     },
     {
+        name: "watch",
+        description: "Files or folders to watch for changes",
+        defaultValue: [],
+        init: w => {
+            let watchElement = [];
+            for (let e of w) {
+                if (typeof e === "string") {
+                    const splitStr = e.split(",");
+                    watchElement = watchElement.concat(splitStr);
+                }
+            }
+
+            return watchElement;
+        }
+    },
+    {
         name: "delay",
         description: "The delay between each interval is ms, cannot be under 15 ms",
         defaultValue: 250,

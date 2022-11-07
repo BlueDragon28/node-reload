@@ -1,9 +1,10 @@
 const options = require("./options");
 const watcher = require("./watcher");
 const program = require("./program");
+const { option } = require("args");
 const node = require("./nodeHandler")();
 
-const listener = watcher("../testDir", "./index.js");
+const listener = watcher(...options.argv.watch);
 
 node.start();
 
