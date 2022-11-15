@@ -10,6 +10,8 @@ class NodeHandler {
         this.processPath = options.argv.command;
         this.args = options.argv.arguments;
         this.process = null;
+        this.askRestart = false; // Set to true when restarting the process.
+        this.restartInterval = null; // The restart interval loop, wait until the process stop running.
     }
 
     /*
@@ -17,7 +19,9 @@ class NodeHandler {
     */
     start() {
         // Stopping the process if its already running.
-        if (this.isRunning()) {
+        if (this.askRestart && this.restartInterval) {
+            return;
+        } else if (this.isRunning()) {
             this.stop();
         }
 
@@ -49,7 +53,7 @@ class NodeHandler {
     Stopping the node program.
     */
     stop() {
-        if (this.isRunning()) {
+        if (this.isRunning() && !this.askRestart && !this.restartInterval) {
             this.process.kill();
             this.process = null;
         }
@@ -59,8 +63,25 @@ class NodeHandler {
     Helper function to restart node.
     */
     restart() {
-        this.stop();
-        this.start();
+        // this.stop();
+        // this.start();
+        if (this.isRunning()) {
+            // Send a signal to close the process.
+            this.process.kill();
+            this.askRestart = true;
+
+            this.restartInterval = setInterval(() => {
+                if (!this.isRunning()) {
+                    // When the process stop running, stop waiting and restart a new instance.
+                    clearInterval(this.restartInterval);
+                    this.restartInterval = null;
+                    this.process = null;
+                    this.askRestart = false;
+
+                    this.start();
+                }
+            }, 150);
+        }
     }
 
     /*
