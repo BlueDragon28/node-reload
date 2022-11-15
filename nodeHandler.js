@@ -21,6 +21,8 @@ class NodeHandler {
             this.stop();
         }
 
+        console.log(`Starting ${this.processPath}!`);
+
         // If the process fail to start, it mean the command does not exists
         // or the arguments are not valid.
         this.process = c.spawn(this.processPath, this.args);
@@ -39,7 +41,7 @@ class NodeHandler {
         this.process.stderr.on("data", output);
 
         this.process.on("close", () => {
-            console.log(`${this.processPath} has been closed!`);
+            console.log(`The process ${this.processPath} has been closed!`);
         });
     }
 
