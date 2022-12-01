@@ -45,7 +45,7 @@ class NodeHandler {
         this.process.stderr.on("data", output);
 
         this.process.on("close", () => {
-            console.log(`The process ${this.processPath} has been closed!`);
+            console.log(`Process ${this.processPath} closed!`);
             this.process = null;
         });
     }
