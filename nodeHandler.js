@@ -46,6 +46,7 @@ class NodeHandler {
 
         this.process.on("close", () => {
             console.log(`The process ${this.processPath} has been closed!`);
+            this.process = null;
         });
     }
 
@@ -55,7 +56,7 @@ class NodeHandler {
     stop() {
         if (this.isRunning() && !this.askRestart && !this.restartInterval) {
             this.process.kill();
-            this.process = null;
+            this.process = null; // Workaround: sometimes, a process do not have a return code.
         }
     }
 
@@ -63,8 +64,6 @@ class NodeHandler {
     Helper function to restart node.
     */
     restart() {
-        // this.stop();
-        // this.start();
         if (this.isRunning()) {
             // Send a signal to close the process.
             this.process.kill();
