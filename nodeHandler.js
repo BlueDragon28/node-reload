@@ -64,10 +64,12 @@ class NodeHandler {
     Helper function to restart node.
     */
     restart() {
-        if (this.isRunning()) {
+        if (this.isRunning() || !this.process) {
             // Send a signal to close the process.
-            this.process.kill();
-            this.askRestart = true;
+            if (this.isRunning()) {
+                this.process.kill();
+                this.askRestart = true;
+            }
 
             this.restartInterval = setInterval(() => {
                 if (!this.isRunning()) {
