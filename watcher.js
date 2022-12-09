@@ -1,3 +1,4 @@
+const { log } = require("node:console");
 const fs = require("node:fs");
 const p = require("node:path");
 
@@ -12,6 +13,7 @@ class File {
     constructor(path, stats) {
         this.path = path;
         this.lastModif = stats.mtimeMs;
+        this.isDeleted = false; // If the file has been deleted.
     }
 
     /*
@@ -20,6 +22,7 @@ class File {
     */
     isModified() {
         if (!fs.existsSync(this.path)) {
+            this.isDeleted = true; // The file has beed deleted.
             return true;
         }
 
@@ -52,6 +55,53 @@ class FilesListener {
 
         this.pathsToWatch = paths;
         this.files = this.findFiles();
+        this.filesToDelete = []; // An array of files to delete from watching.
+    }
+
+    /*
+    Check if a file exist
+    */
+    checkIfModified(file) {
+        if (!file) {
+            return null;
+        }
+
+        let hasModification = false;
+
+        if (file.isModified()) {
+            hasModification = true;
+
+            if (file.isDeleted) {
+                this.filesToDelete.push(file);
+            }
+        }
+
+        return hasModification;
+    }
+
+    /*
+    Remove from the files array the files present inside the filesToDelete array.
+    */
+    removeUnneededFiles() {
+        const newFilesArray = [];
+
+        for (let file of this.files) {
+            let doNotDelete = true;
+
+            for (let deleteFile of this.filesToDelete) {
+                if (file === deleteFile) {
+                    doNotDelete = false;
+                    console.log(`Deleting file: ${file.path}`);
+                }
+            }
+
+            if (doNotDelete) {
+                newFilesArray.push(file);
+            }
+        }
+
+        this.files = newFilesArray;
+        this.filesToDelete = [];
     }
 
     /*
@@ -66,11 +116,14 @@ class FilesListener {
 
         // Check if there is modification in the files.
         for (let file of this.files) {
-            if (file) {
-                if (file.isModified()) {
-                    hasModification = true; // Do not stop here, we want to update the stats of all the files.
-                }
+            if (this.checkIfModified(file)) {
+                hasModification = true;
             }
+        }
+
+        // Remove files to delete from the files array.
+        if (this.filesToDelete.length > 0) {
+            this.removeUnneededFiles();
         }
 
         // Now check if there is new or less files.
