@@ -25,3 +25,7 @@ Node-reload is not yet an npm package, so you have to install it yourself. Just 
     -v, --version           Output the version number
     -w, --watch <list>      Files or folders to watch for changes (defaults to [])
 ```
+
+## License
+
+The software is licensed under the **MIT** license. Check the [LICENSE](LICENSE) file.
