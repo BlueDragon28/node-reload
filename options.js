@@ -64,6 +64,14 @@ args.options([
                 return delay;
             }
         }
+    },
+    {
+        /*
+        Should the program be autorestarted when it crash.
+        */
+        name: "autorestart",
+        description: "Automatically restart the program when it crash",
+        defaultValue: false
     }
 ]);
 
