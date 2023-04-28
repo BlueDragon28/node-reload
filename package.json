@@ -1,8 +1,11 @@
 {
   "name": "node-reload",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Automatically restart node program on files change",
   "main": "index.js",
+  "bin": {
+    "node-reload": "./index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
