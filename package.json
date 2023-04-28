@@ -17,7 +17,7 @@
     "auto-reload"
   ],
   "author": "Erwan Saclier de la Bâtie",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "args": "^5.0.3"
   },
