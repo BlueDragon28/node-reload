@@ -1,5 +1,5 @@
 {
-  "name": "node-reload",
+  "name": "@bluedragon28/node-reload",
   "version": "0.1.0",
   "description": "Automatically restart node program on files change",
   "main": "index.js",
