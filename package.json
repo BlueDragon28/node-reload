@@ -20,5 +20,10 @@
   "license": "ISC",
   "dependencies": {
     "args": "^5.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BlueDragon28/node-reload.git",
+    "homepage": "https://github.com/BlueDragon28/node-reload"
   }
 }
